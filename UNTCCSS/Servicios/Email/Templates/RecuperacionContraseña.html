@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperación de Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .header h4 {
+                color: #2230B0;
+                font-size: 22px;
+                margin: 0;
+            }
+
+        .content {
+            margin-bottom: 30px;
+        }
+
+            .content p {
+                margin: 0 0 20px;
+                font-size: 16px;
+                color: #555;
+            }
+
+        .button {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .button a {
+                display: inline-block;
+                background-color: #2230B0;
+                color: #fff;
+                text-decoration: none;
+                padding: 9px 27px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+
+                .button a:hover {
+                    background-color: #162075;
+                }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 30px;
+        }
+
+            .footer p {
+                margin: 5px 0;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; flex-direction:column;">
+                <span style="font-size:20px;">Unidad de Ciencias Sociales</span>
+                <span style="font-size:20px;">Escuela de Postgrado</span>
+            </div>
+            <h4 style="margin-top: 10px;">Recuperación de Contraseña</h4>
+        </div>  
+        <div>
+
+        </div>
+        <div class="content">
+            <p>Hola {{Nombre}},</p>
+            <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si realizaste esta solicitud, por favor haz clic en el botón de abajo para continuar con el proceso:</p>
+        </div>
+        <div class="button">
+            <a href="{{Link}}" target="_blank">Restablecer Contraseña</a>
+        </div>
+        <div class="content">
+            <p>Si no solicitaste restablecer tu contraseña, por favor ignora este mensaje. Tu cuenta permanecerá segura y no se realizarán cambios.</p>
+        </div>
+        <div class="footer">
+            <p>Gracias por confiar en nosotros,</p>
+            <p>El equipo de <strong>AIA PAEC</strong></p>
+            <p>Si necesitas ayuda adicional, no dudes en contactarnos en <a href="mailto:soporte@aiapaec.com">soporte@aiapaec.com</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

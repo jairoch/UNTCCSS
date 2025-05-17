@@ -1,0 +1,31 @@
+﻿body {
+}
+
+.page-item .page-link {
+    cursor: pointer;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+}
+
+.status-true {
+    background-color: #C6FFD6; 
+    color: #28a745; 
+}
+
+
+.status-false {
+    background-color: #FFC6C6;
+    color: red;
+}
+
+@media (max-width: 767px) {
+    .content-lista {
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,72 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">@Title</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+
+<hr/>
+
+<div class="m-0">
+    <EditForm Model="Input" OnValidSubmit="UpdateEstudiante">
+        <DataAnnotationsValidator />
+        <div class="row">
+            <!-- 🔹 Buscar Alumno por DNI -->
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <InputText class="form-control" placeholder="DNI"
+                               aria-label="DNI" aria-describedby="button-addon2"
+                               @bind-value="Input.DNI" />
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <div class="mb-3">
+                    <label class="form-label">Nombres</label>
+                    <InputText @bind-Value="Input.Nombres" class="form-control"/>
+                </div>
+            </div>
+            <div class="col-12 col-sm-5">
+                <div class="mb-3">
+                    <label class="form-label">Apellidos</label>
+                    <InputText @bind-Value="Input.Apellidos" class="form-control" />
+                </div>
+            </div>
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <InputText @bind-Value="Input.Telefono" class="form-control" />
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Correo Electrónico</label>
+                    <InputText type="email" @bind-Value="Input.Email" class="form-control" />
+                </div>
+            </div>
+            <div class="col-12 col-sm-8 mb-3 d-flex align-items-end">
+                <div class="input-group">
+                    <span class="input-group-text">Dirección</span>
+                    <InputText class="form-control" @bind-Value="Input.Direccion"></InputText>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <button type="submit" class="btn btn-success roboto-regular w-100">Guardar Cambios</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    private async Task Close()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+}

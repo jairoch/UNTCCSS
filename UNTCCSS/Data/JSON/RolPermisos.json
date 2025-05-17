@@ -1,0 +1,97 @@
+[
+  // 🔹 Admin (Ahora tiene permisos específicos en lugar de AccesoTotal)
+  {
+    "Id": 1,
+    "RoleId": "1",
+    "PermisosId": 2
+  },
+  {
+    "Id": 2,
+    "RoleId": "1",
+    "PermisosId": 5
+  },
+  {
+    "Id": 3,
+    "RoleId": "1",
+    "PermisosId": 6
+  },
+  {
+    "Id": 4,
+    "RoleId": "1",
+    "PermisosId": 7
+  },
+  {
+    "Id": 5,
+    "RoleId": "1",
+    "PermisosId": 8
+  },
+  {
+    "Id": 6,
+    "RoleId": "1",
+    "PermisosId": 11
+  },
+
+  // 🔹 Empresa
+  {
+    "Id": 7,
+    "RoleId": "2",
+    "PermisosId": 3
+  },
+  {
+    "Id": 8,
+    "RoleId": "2",
+    "PermisosId": 4
+  },
+  {
+    "Id": 9,
+    "RoleId": "2",
+    "PermisosId": 9
+  },
+  {
+    "Id": 10,
+    "RoleId": "2",
+    "PermisosId": 10
+  },
+  {
+    "Id": 11,
+    "RoleId": "2",
+    "PermisosId": 12
+  },
+  {
+    "Id": 12,
+    "RoleId": "2",
+    "PermisosId": 13
+  },
+  {
+    "Id": 13,
+    "RoleId": "2",
+    "PermisosId": 14
+  },
+  {
+    "Id": 14,
+    "RoleId": "2",
+    "PermisosId": 15
+  },
+  {
+    "Id": 15,
+    "RoleId": "2",
+    "PermisosId": 16
+  },
+
+  // 🔹 Registrador
+  {
+    "Id": 16,
+    "RoleId": "3",
+    "PermisosId": 3
+  },
+  {
+    "Id": 17,
+    "RoleId": "3",
+    "PermisosId": 9
+  },
+  {
+    "Id": 18,
+    "RoleId": "3",
+    "PermisosId": 12
+  }
+]

@@ -1,0 +1,237 @@
+﻿@using UNTCCSS.Components.Layout
+@using UNTCCSS.Components.Messege
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/certificados"
+@layout AdminPanel
+@attribute [Authorize(Policy = "Certificates")]
+
+<PageTitle>Certificados</PageTitle>
+
+<link rel="stylesheet" href="css/tabla.css">
+
+<div class="container mt-2">
+    <!-- 🔍 Buscador -->
+    <div class="row">
+        <div class="col-12 col-md-5">
+            <!-- Botón para registrar nuevo certificado -->
+            <AuthorizeView Policy="RegistrarCertificados">
+                <button class="btn btn-success open-sans-regular"
+                        @onclick="RegistrarNuevo">
+                    Registrar un nuevo certificado
+                </button>
+            </AuthorizeView>
+        </div>
+        <div class="col-12 col-md-7 d-flex justify-content-md-end mt-2 mt-md-0">
+            <div class="me-2 col-sm-6">
+                <div class="input-group">
+                    <InputText class="form-control" placeholder="Buscar por DNI"
+                    @bind-Value="searchText"/>
+                    <button type="button" class="btn btn-outline-secondary" @onclick="() => BuscarEstudiantes()">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+            <div class="">
+                <div class="dropdown">
+                    <button class="btn btn-primary open-sans-regular" type="button" id="dropdownFiltroFecha" data-bs-toggle="dropdown" aria-expanded="false">
+                        @FiltroTipo
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownFiltroFecha">
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Hoy"))">Hoy</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Ayer"))">Ayer</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Últimos 7 días"))">Últimos 7 días</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Últimos 30 días"))">Últimos 30 días</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Este Mes"))">Este mes</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Año Actual"))">Año actual</a></li>
+                        <li><a class="dropdown-item" @onclick="@(() => FiltrarTabla("Año Anterior"))">Año anterior</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Mensaje Notificacion-->
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <div class="mt-3">
+            <StatusMessage Message="@Message"></StatusMessage>
+        </div>
+    }
+
+    <!-- 📌 Tabla -->
+    <div class="table-responsive border rounded mt-2">
+        <table class="roboto-regular">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Apellidos</th>
+                    <th>Nombre</th>
+                    <th>Doc.</th>
+                    <th>Status</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var estudiante in ListEstudiantes)
+                {
+                    int ID = estudiante.Id;
+                    <tr class="accordion-toggle" onclick="toggleCollapse('@estudiante.DNI')">
+                        <td>@estudiante.DNI</td>
+                        <td>@estudiante.Apellidos</td>
+                        <td>@estudiante.Nombres</td>
+                        <td class="roboto-bold text-danger">@estudiante.Certificados.Count()</td>
+                        <td>
+                            <span class="bg-success p-1 rounded-2 text-white px-2">True</span>
+                        </td>
+                        <td>@estudiante.AtCreated</td>
+                        <td>
+                            <!-- Dropdown de opciones de usuario -->
+                            <div class="dropdown">                                
+                                <button class="btn btn-secondary btn-options2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-animation-table" aria-labelledby="dropdownMenuButton1">
+                                    <li>
+                                        <button class="dropdown-item" @onclick="() => EditarEstudiante(estudiante.Id)">
+                                            <i class="bi bi-pencil-square me-2"></i> Editar
+                                        </button>
+                                    </li>
+                                    <li>
+                                        @if (authData.Permisos.Contains("EliminarEstudiantes") || authData.Roles.Contains("Admin"))
+                                        {
+                                            <button class="dropdown-item eliminar" @onclick="() => EliminarEstudiante(estudiante.Id)">
+                                                <i class="bi bi-trash me-2"></i> Eliminar
+                                            </button>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Fila oculta que se despliega -->
+                    <tr class="collapse-content" id="collapse-@estudiante.DNI">
+                        <td colspan="7" class="color-content">
+                            <strong>Cursos:</strong>
+                            <ul class="list-group mt-2">
+                                @if (estudiante.Certificados != null && estudiante.Certificados.Any())
+                                {
+                                    @foreach (var cert in estudiante.Certificados)
+                                    {
+                                        int CertId = cert.Id;
+                                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                            <span class="me-2"><b>@cert.Nombre</b> - @cert.Codigo</span>
+                                            <span class="me-2"><b>Diplomado</b> - @cert.Registro</span>
+                                            <span><b>Fecha expedición:</b> 23/04/2025</span>
+                                            <div class="d-flex gap-2">
+
+                                                <!-- InputFile estilizado como botón -->
+                                                <label for="fileInput-@cert.Id" class="btn btn-primary d-flex justify-content-center align-items-center" style="font-size: 12px;" disabled="@(CargandoCertificados.ContainsKey(cert.Id) && CargandoCertificados[cert.Id])">
+                                                    @if (CargandoCertificados.ContainsKey(cert.Id) && CargandoCertificados[cert.Id])
+                                                    {
+                                                        <span class="spinner-border spinner-border-sm"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-cloud-upload me-1"></i>
+                                                        <span>PDF</span>
+                                                    }
+                                                </label>
+                                                <!-- InputFile oculto pero funcional -->
+                                                <InputFile id="@GetInputFileId(cert.Id)" OnChange="@(e => FileUploaded(e, estudiante, cert))" accept=".pdf" class="d-none" />
+
+
+                                                <div class="dropdown-menu-end">
+                                                    <button class="btn btn-secondary btn-options" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-animation-table" aria-labelledby="dropdownMenuButton1">
+                                                        <li>
+                                                            <button class="dropdown-item" @onclick="() => EditarCertificado(CertId)">
+                                                                <i class="bi bi-pencil-square me-2"></i>Editar Registro
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            @if (cert.Status && (authData.Permisos.Contains("PausarVerificación") || authData.Roles.Contains("Admin")))
+                                                            {
+                                                                <button class="dropdown-item d-flex align-items-center" style="color:#FF5B14;" @onclick="() => PausarVerificacion(CertId)">
+                                                                    <i class="bi bi-pause-circle me-2"></i> Pausar Verificación
+                                                                </button>
+                                                            }
+                                                            else if (authData.Permisos.Contains("ActivarVerificación") || authData.Roles.Contains("Admin"))
+                                                            {
+                                                                <button class="dropdown-item text-success d-flex align-items-center" @onclick="() => ReanudarVerificacion(CertId)">
+                                                                    <i class="bi bi-play-circle me-2 text-success"></i> Activar Verificación
+                                                                </button>
+                                                            }
+
+                                                        </li>
+                                                        <li>
+                                                            @if (authData.Permisos.Contains("EliminarCertificados") || authData.Permisos.Contains("AccesoTotal"))
+                                                            {
+                                                                <button class="dropdown-item eliminar" @onclick="() => Delete(CertId)">
+                                                                    <i class="bi bi-trash me-2"></i> Eliminar
+                                                                </button>
+                                                            }
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--Paginacion-->
+    <!-- Paginación -->
+    @if (ListEstudiantes != null && ListEstudiantes.Any())
+    {
+        <div class="d-flex flex-row justify-content-end open-sans-regular mt-2">
+            <nav aria-label="Page navigation">
+                <ul class="pagination mb-0">
+
+                    <!-- Página anterior -->
+                    <li class="page-item @((Pagina == 1) ? "disabled" : "")">
+                        <a class="page-link" @onclick="() => CambiarPagina(Pagina - 1)">&laquo;</a>
+                    </li>
+
+                    <!-- Show Page Numbers -->
+                    @for (var i = 1; i <= TotalPaginas; i++)
+                    {
+                        if (i <= 4 || i == TotalPaginas || (i >= Pagina - 1 && i <= Pagina + 1))
+                        {
+                            <li class="page-item @(i == Pagina ? "active" : "")">
+                                <a class="page-link" @onclick="() => CambiarPagina(i)">@i</a>
+                            </li>
+                        }
+                        else if (i == 5)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                    }
+
+                    <!-- Página siguiente -->
+                    <li class="page-item @(Pagina == TotalPaginas ? "disabled" : "")">
+                        <a class="page-link" @onclick="() => CambiarPagina(Pagina + 1)">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+<script src="js/certificados/certificados.js"></script>
+
+@code {
+    [CascadingParameter] public IModalService Modal { get; set; } = default!;
+}

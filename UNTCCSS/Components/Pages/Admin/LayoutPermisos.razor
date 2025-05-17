@@ -1,0 +1,49 @@
+﻿@using UNTCCSS.Components.Layout
+@using UNTCCSS.Components.Messege
+@using UNTCCSS.Models
+@using UNTCCSS.Repositorios.IRepositorios
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/permisos"
+@layout AdminPanel
+@inject IRoleRepositorio RoleRepositorio
+@attribute [Authorize(Policy = "Roles")]
+
+<div class="container mt-4">
+    <h4 class="text-primary mb-3"><i class="bi bi-shield-lock"></i> Permisos Disponibles</h4>
+
+    <div class="row g-3">
+        @if (ListPermisos.Any())
+        {
+            @foreach (var permiso in ListPermisos)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body text-center">
+                            <i class="bi bi-shield-check text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="card-title mt-2 text-dark">@permiso.Name</h5>
+                            <p class="card-text text-muted">@permiso.Descripcion</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center w-100">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando permisos...</span>
+                </div>
+                <p class="text-muted mt-2">Cargando permisos disponibles...</p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    List<Permisos> ListPermisos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListPermisos = await RoleRepositorio.ListaPermisos();
+    }
+}

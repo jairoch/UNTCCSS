@@ -1,0 +1,101 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">@Title</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+<hr />
+
+<div>
+     <EditForm Model="Input" OnValidSubmit="UpdateCert" FormName="register">
+        <DataAnnotationsValidator />
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <label for="NombreCurso" class="form-label">Nombre del Curso</label>
+                <InputText id="NombreCurso" class="form-control" placeholder="curso"
+                           @bind-Value="Input.Nombre" required/>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Resolución</label>
+                    <InputSelect @bind-value="Input.IdResolucion" class="form-control" required>
+                        <option value="">Seleccionar Resolución</option>
+                        @if (Resoluciones != null && Resoluciones.Any())
+                        {
+                            @foreach (var resolucion in Resoluciones)
+                            {
+                                <option value="@resolucion.Id">@resolucion.Name</option>
+                            }
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+
+            <!--Tipo de Documento-->
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Documento</label>
+                    <InputSelect @bind-Value="Input.TipoDocumento" class="form-control" required>
+                        <option value="">Seleccionar Resolución</option>
+                        <option value="Diplomado">Diplomado</option>
+                        <option value="Especializacion">Especialización</option>
+                        <option value="Certificado">Certificado</option>
+                    </InputSelect>
+                </div>
+            </div>
+
+            <!--Promedio-->
+            <div class="col-12 col-md-6">
+                <label for="Promedio" class="form-label">Promedio Final</label>
+                <InputNumber id="Promedio" class="form-control" placeholder="Promedio"
+                           @bind-Value="Input.PromedioFinal" required/>
+            </div>
+
+            <!--Fecha de Inicio-->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Inicio</label>
+                    <InputDate @bind-Value=Input.FechaInicio class="form-control" />
+                </div>
+            </div>
+
+            <!--Fecha de Termino-->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Termino</label>
+                    <InputDate @bind-Value=Input.FechaTermino class="form-control" />
+                </div>
+            </div>
+
+            <!--Fecha de Expedición-->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Emisión</label>
+                    <input type="date" @bind="Input.FechaEmision" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mt-2 mb-2">
+                <button type="submit" class="btn btn-primary custom-button w-100" disabled="@IsProcessing">
+                    <i class="@ButtonIcon"></i> @ButtonText
+                    <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: @(IsProcessing ? "inline-block" : "none");"></span>
+                    <span class="ms-2 text-success" style="display: @(IsSuccess ? "inline-block" : "none");">&#10004;</span>
+                </button>
+            </div>
+        </div>
+     </EditForm>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public int CertificadoId { get; set; }
+
+    private async Task Close()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+}

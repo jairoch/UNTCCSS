@@ -1,0 +1,242 @@
+﻿@using UNTCCSS.Components.Pages.Admin
+@inherits LayoutComponentBase
+@layout MainLayout
+
+<div class="wrapper">
+    <div class="body-overlay"></div>
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header d-flex">
+            <img src="/images/logo.png" class="img-fluid" alt="Logo" />
+            <div class="d-flex flex-column marca">
+                <span class="roboto-bold fs-5 nowrap">Universidad</span>
+                <span class="d-inline-block" style="font-size: 14px; white-space:nowrap;">Nacional de Trujillo</span>
+            </div>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <NavLink href="/admin/home" class="nav-link" active-class="active">
+                    <i class="material-icons">home</i><span>Home</span>
+                </NavLink>
+            </li>
+
+@*             <AuthorizeView Policy="Dashboard">
+                <li>
+                    <NavLink href="/admin/dashboard" class="nav-link" active-class="active">
+                        <i class="material-icons">dashboard</i><span>Dashboard</span>
+                    </NavLink>
+                </li>
+            </AuthorizeView> *@
+           
+            <AuthorizeView Policy="Certificates">
+                <li>
+                    <NavLink href="/admin/certificados" class="nav-link" active-class="active">
+                        <i class="material-icons">card_membership</i><span>Certificados</span>
+                    </NavLink>
+                </li>
+            </AuthorizeView>
+
+            <AuthorizeView Policy="Usuarios">
+                <li>
+                    <NavLink href="/admin/usuarios" class="nav-link" active-class="active">
+                        <i class="material-icons">group</i><span>Usuarios</span>
+                    </NavLink>
+                </li>
+            </AuthorizeView>            
+
+@*             <AuthorizeView Policy="Empresas">
+                <li>
+                    <NavLink href="/admin/empresas" class="nav-link" active-class="active">
+                        <i class="material-icons">domain</i><span>Empresas</span>
+                    </NavLink>
+                </li>
+            </AuthorizeView> *@
+
+            <AuthorizeView Policy="Configuracion">
+                <li class="dropdown">
+                    <NavLink href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="false" class="nav-link">
+                        <i class="material-icons">settings</i><span>Configuracion</span>
+                    </NavLink>
+                    <ul class="collapse list-unstyled menu bg-white" id="homeSubmenu1">
+                        <li>
+                            <NavLink href="admin/roles" class="nav-link" active-class="active">Roles</NavLink>
+                        </li>
+                        <li>
+                            <NavLink href="admin/permisos" class="nav-link" active-class="active">Permisos</NavLink>
+                        </li>
+@*                         <li>
+                            <NavLink href="#" class="nav-link" active-class="active">Admin</NavLink>
+                        </li> *@
+                    </ul>
+                </li>
+            </AuthorizeView>            
+            <!--Menu oculto por defecto-->
+            <li class="small-screen navbar-display">
+                <ul class="p-0">
+                    <li class="d-lg-none d-md-block d-xl-none d-sm-block">
+                        <NavLink class="nav-link" active-class="active">
+                            <i class="material-icons">notifications</i><span>notificaciones</span>
+                        </NavLink>
+                    </li>
+                    <li class="d-lg-none d-md-block d-xl-none d-sm-block">
+                        <NavLink class="nav-link" active-class="active">
+                            <i class="material-icons">chat</i><span>mensajes</span>
+                        </NavLink>
+                    </li>
+                    <li class="dropdown">
+                        <!-- Botón de perfil con imagen -->
+                        <button href="#homeSubmenuperfilsidebar"
+                                data-bs-toggle="dropdown"
+                           aria-expanded="false"
+                           class="nav-link">
+                            <div class="border d-flex justify-content-center align-items-center p-1 text-dark" style="border-radius: 50%;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                            </div>
+                            <span class="ms-2 open-sans-bold">Mi Cuenta</span>
+                        </button>
+                        <!-- Menú desplegable -->
+                        <ul class="dropdown-menu dropdown-menu-end list-unstyled p-3" id="homeSubmenuperfilsidebar"
+                            style="min-width: 230px;">
+                            <!-- Encabezado del perfil -->
+                            <li class="text-center d-flex flex-column align-items-center">
+                                <div class="border d-flex align-items-center justify-content-center mb-2" style="border-radius: 50%; width: 70px; height: 70px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                                </div>
+                                <h5 class="mb-0 text-black fw-bold">@Name</h5>
+                                <small class="text-muted">@Email</small>
+                                <hr style="border: none; border-top: 2px solid red;">
+                            </li>
+                            <!-- Opciones del menú -->
+                            <li class="rounded-2">
+                                <NavLink class="nav-link d-flex align-content-center">
+                                    <i class="material-icons me-2">account_circle</i>
+                                    <span>Mi Perfil</span>
+                                </NavLink>
+                            </li>
+                            <li class="rounded-2">
+                                <NavLink class="nav-link d-flex align-content-center">
+                                    <i class="material-icons me-2">settings</i>
+                                    <span>Ajustes</span>
+                                </NavLink>
+                            </li>
+                            <li class="mt-2">
+                                <form action="Account/Logout" method="post">
+                                    <AntiforgeryToken />
+                                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                    <button type="submit" class="d-flex align-items-center w-100">
+                                        <i class="material-icons mx-2 me-2">logout</i>
+                                        Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <!-- Page Content -->
+    <div id="content">
+        <div class="top-navbar">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <!--Boton en pantallas grandes-->
+                    <button type="button" 
+                            id="sidebarCollapse" 
+                            @onclick="ToggleSidebar" 
+                            class="d-xl-block d-lg-block d-md-none d-none">
+                            <i class="bi bi-list"></i>
+                    </button>
+
+                    <!--Boton en pantallas pequeñas-->
+                    <button class="d-inline-block d-lg-none ms-auto more-button"
+                            type="button"
+                            @onclick="ToggleMoreMenu"
+                            data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none d-flex justify-content-end me-3" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto d-flex align-items-center">
+                            <li class="dropdown nav-item active">
+                                <NavLink class="nav-link" data-toggle="dropdown">
+                                    <span class="material-icons">notifications</span>
+                                    <span class="notification">4</span>
+                                </NavLink>
+                                <ul class="dropdown-menu">
+                                    <li><NavLink class="nav-link" href="#">You have 5 new messages</NavLink></li>
+                                    <li><NavLink class="nav-link" href="#">You're now friend with Mike</NavLink></li>
+                                    <li><NavLink class="nav-link" href="#">Wish Mary on her birthday!</NavLink></li>
+                                    <li><NavLink class="nav-link" href="#">5 warnings in Server Console</NavLink></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" active-class="active">
+                                    <span class="material-icons">apps</span>
+                                </NavLink>
+                            </li>
+                            <li class="dropdown">
+                                <!-- Botón de perfil con imagen -->
+                                <button href="#homeSubmenuperfil"
+                                        data-bs-toggle="dropdown"
+                                   aria-expanded="false"
+                                   type="button">
+                                   <div class="border d-flex justify-content-center align-items-center p-1" style="border-radius: 50%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                                   </div>                                   
+                                </button>
+                                <!-- Menú desplegable -->
+                                <ul class="dropdown-menu dropdown-menu-end list-unstyled menuperfilbartop p-3" id="homeSubmenuperfil">
+                                    <!-- Encabezado del perfil -->
+                                    <li class="text-center d-flex flex-column justify-content-center align-items-center">
+                                        <div class="border d-flex align-items-center justify-content-center mb-2" style="border-radius: 50%; width: 70px; height: 70px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                                        </div>
+                                        <h5 class="mb-0 text-black fw-bold">@Name</h5>
+                                        <small class="text-muted">@Email</small>
+                                        <hr style="border: none; border-top: 2px solid red;">
+                                    </li>
+                                    <!-- Opciones del menú -->
+                                    <li class="rounded-2">
+                                        <NavLink class="nav-link d-flex align-content-center">
+                                            <i class="material-icons me-2">account_circle</i>
+                                            <span>Mi Perfil</span>
+                                        </NavLink>
+                                    </li>
+                                    <li class="rounded-2">
+                                        <NavLink class="nav-link d-flex align-content-center">
+                                            <i class="material-icons me-2">settings</i>
+                                            <span>Ajustes</span>
+                                        </NavLink>
+                                    </li>
+                                    <li class="mt-2">
+                                        <form action="Account/Logout" method="post">
+                                            <AntiforgeryToken />
+                                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                            <button type="submit" class="d-flex align-items-center w-100">
+                                                <i class="material-icons mx-2 me-2">logout</i>
+                                                Cerrar Sesión
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <CascadingValue Value="@User">
+            <div class="main-content p-2">
+                @Body
+            </div>
+        </CascadingValue>
+
+    </div>
+</div>
+
+<script src="/js/AdminPanel/Sidebar.js"></script>

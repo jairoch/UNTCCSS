@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "Name": "N° 0001-A-2024-DUPG/CC.SS",
+    "Documentacion": "",
+    "Status": true,
+    "AtCreated": "2025-02-12 14:30:00.0000000"
+  },
+  {
+    "Id": 2,
+    "Name": "N° 0001-A-2022-DUPG/CC.SS",
+    "Documentacion": "",
+    "Status": true,
+    "AtCreated": "2025-02-12 14:30:00.0000000"
+  }
+]

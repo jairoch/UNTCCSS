@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+
+  /*====DESARR0LLO====*/
+  // commandName: Especifica que se ejecuta el proyecto completo (.NET Core).
+  // dotnetRunMessages: Habilita los mensajes de la consola cuando se ejecute el proyecto.
+  // launchBrowser: Indica si el navegador debe abrirse automáticamente al iniciar la aplicación.
+  // applicationUrl: Define la URL donde se ejecutará la aplicación en el entorno local (usando HTTP).
+  // environmentVariables: Establece variables de entorno que configuran el entorno de ejecución.
+  // En desarrollo, se debe establecer "ASPNETCORE_ENVIRONMENT" como "Development".
+
+  /*====PRODUCCION====*/
+  // commandName: Especifica que se ejecuta el proyecto completo (.NET Core).
+  // dotnetRunMessages: Desactiva los mensajes de la consola en producción para evitar información innecesaria.
+  // launchBrowser: No debe abrir el navegador automáticamente en producción; se recomienda configurarlo como false.
+  // applicationUrl: Define la URL donde se ejecutará la aplicación en producción (debe ser accesible públicamente, generalmente en HTTPS).
+  // environmentVariables: Establece variables de entorno que configuran el entorno de ejecución.
+  // En producción, se debe establecer "ASPNETCORE_ENVIRONMENT" como "Production" para activar las configuraciones específicas de producción.
+
+
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://0.0.0.0:5208",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://0.0.0.0:7032;http://0.0.0.0:5208",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

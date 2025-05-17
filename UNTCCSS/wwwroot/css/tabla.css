@@ -1,0 +1,48 @@
+﻿/*SECCION TABLA*/
+
+table {
+    width: 100%;
+    background: transparent;
+    color: black;
+}
+
+thead {
+    background: #F5F4F4;
+    cursor: pointer;
+}
+
+th, td {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: 1px solid #D8D8D8;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+    tbody tr:hover {
+        background: #F4F6F9;
+    }
+
+.eliminar {
+    color: #A00000;
+}
+.btn-options {
+    background: #D8D8D8;
+    border: none;
+    color: black;
+    padding: 5px;
+}
+
+/*Animación Tabla*/
+.dropdown-animation {
+    transform: translateY(30px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-animation-table {
+    transform: translateY(25px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}

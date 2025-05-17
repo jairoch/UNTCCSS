@@ -1,0 +1,46 @@
+﻿/*Estados de registros*/
+.estado-activo {
+    white-space: nowrap;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-radius: 5px;
+    padding: 5px;
+    display: inline-block;
+}
+
+.estado-suspendido {
+    white-space: nowrap;
+    background-color: #fff3cd;
+    color: #664d03;
+    border-radius: 5px;
+    padding: 5px;
+    display: inline-block; 
+}
+
+.Roles {
+    white-space: nowrap;
+    background: #ADBCFF;
+    border-radius: 5px;
+    padding: 5px;
+    color: #162075;
+}
+
+.Permisos {
+    white-space: nowrap;
+    background: #FFD580;
+    border-radius: 5px;
+    padding: 5px;
+    color: #8B4700;
+}
+
+.card-body > p > strong {
+    color: #9E9E9E;
+}
+
+.dropdown-animation-table{
+    z-index:1;
+}
+
+::deep tbody tr td {
+    vertical-align: top;
+}

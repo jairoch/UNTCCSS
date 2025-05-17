@@ -1,0 +1,11 @@
+﻿.header-unt {
+    margin-bottom: 60px;
+}
+.imagen {
+    max-height: 598px; /* Altura fija */
+    width: 100%; /* Ancho dinámico basado en el contenedor */
+    object-fit: cover; /* Ajusta la imagen sin deformarse */
+}
+.card {
+    transition: all 0.5s ease;
+}

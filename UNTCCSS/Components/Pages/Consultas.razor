@@ -1,0 +1,94 @@
+﻿@page "/"
+@layout MainLayout
+@using UNTCCSS.Components.Layout
+
+<PageTitle>Consulta Certificación</PageTitle>
+
+<style>
+    .border-color {
+        border-color: #63DEE1;
+    }
+
+    .content-main {
+        text-align: center;
+    }
+    .alert{
+        padding: 10px;
+    }
+    @@media (max-width: 1000px) {
+        .display-4 {
+            font-size: 2.2rem;
+        }
+        h3{
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="d-flex flex-column justify-content-center p-2" style="height: 100vh;">
+    <div class="d-flex justify-content-center">
+        <img src="/images/logo.png" alt="LOGO" style="max-width: 170px;" />
+    </div>
+    <div class="d-flex flex-row justify-content-center mt-2">
+        <div class="text-center">
+            <h1 class="open-sans-bold text-primary display-4 text-uppercase">
+                Universidad Nacional de Trujillo
+            </h1>
+
+            <h2 class="Suse display-5 text-uppercase">Escuela de Postgrado</h2>
+            <h3 class="Suse mt-3">
+                Unidad de Postgrado - Ciencias Sociales
+            </h3>
+
+            <h3 class="roboto-bold">
+                RESOLUCIÓN N°0001-A-2024-DUPG/CC.SS
+            </h3>
+        </div>
+    </div> 
+    <div class="container mt-2" style="max-width: 650px;">
+        <div class="d-flex flex-column content-main">
+             
+            <h4 class="roboto-regular">Consulta de Certificación</h4>
+            <p class="text-muted">
+                Este Portal se ha desarrollado exclusivamente con fines de verificación, registro y validación de las certificaciones emitidas por los programas extracurriculares ejecutados en el marco de la
+                RESOLUCIÓN N°0001-A-2024-DUPG/CC.SS
+            </p>
+
+            @if (mostrarResultado)
+            {
+                <div class="alert p-2 @(mensajeResultado.Contains("encontrado") ? "alert-success" : "alert-danger") mx-auto"
+                     style="color:#940000;">
+                    @mensajeResultado
+                </div>
+            }
+            <div class="d-flex justify-content-center">
+                <EditForm Model="DNI" OnValidSubmit="Validar">
+                    <DataAnnotationsValidator/>
+                    <div class="me-4">
+                        <div class="input-group input-group-lg roboto-regular">
+                            <InputText id="email" class="form-control border-color" required
+                                       Placeholder="Ingrese su DNI" @bind-Value="DNI" />
+
+                            <!-- Botón con flecha o spinner -->
+                            <button type="submit" class="btn btn-outline-primary border-color" disabled="@Cargando">
+                                @if (Cargando)
+                                {
+                                    <span class="spinner-border spinner-border-sm"></span> <!-- Loader -->
+                                }
+                                else
+                                {
+                                    <span>Buscar <i class="ms-2 bi bi-arrow-right"></i></span>
+                                }
+                            </button>
+                        </div>
+                    </div>
+                </EditForm>
+                <button class="btn btn-primary open-sans-regular" @onclick="MostrarModal">Mas Información</button>
+            </div>           
+        </div>
+    </div>
+</div>
+
+@code {
+ 
+}

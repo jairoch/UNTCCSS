@@ -1,0 +1,263 @@
+﻿@using UNTCCSS.Components.Layout
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/home"
+@layout AdminPanel
+@attribute [Authorize]
+
+<PageTitle>Panel de Control</PageTitle>
+
+<div class="admin-home-container">
+    <!-- Header con bienvenida personalizada -->
+    <div class="admin-welcome-header bg-light p-4 mb-4 border-bottom">
+        <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+                <h2 class="h4 mb-1 text-primary">Bienvenido, @GetUserName()</h2>
+                <p class="text-muted mb-0">Sistema de Gestión de Certificados - Postgrado CS</p>
+            </div>
+            <div class="badge bg-primary text-white">
+                <i class="bi bi-shield-lock me-1"></i> Modo Administrativo
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de acceso rápido -->
+    <div class="quick-access-grid mb-5">
+        <div class="row g-4">
+            <!-- Certificados -->
+            <div class="col-md-4">
+                <a href="/admin/certificados" class="card quick-access-card h-100 text-decoration-none">
+                    <div class="card-body text-center">
+                        <div class="icon-container bg-primary-light mb-3">
+                            <i class="bi bi-file-earmark-text-fill text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Certificados</h5>
+                        <p class="card-text text-muted small">Gestión y validación de certificados académicos</p>
+                        <span class="badge bg-primary">@GetPendingCertificates() pendientes</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Estudiantes -->
+            <div class="col-md-4">
+                <a href="/admin/estudiantes" class="card quick-access-card h-100 text-decoration-none">
+                    <div class="card-body text-center">
+                        <div class="icon-container bg-success-light mb-3">
+                            <i class="bi bi-people-fill text-success"></i>
+                        </div>
+                        <h5 class="card-title">Estudiantes</h5>
+                        <p class="card-text text-muted small">Registro y administración de estudiantes</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Configuración -->
+            <div class="col-md-4">
+                <a href="/admin/configuracion" class="card quick-access-card h-100 text-decoration-none">
+                    <div class="card-body text-center">
+                        <div class="icon-container bg-warning-light mb-3">
+                            <i class="bi bi-gear-fill text-warning"></i>
+                        </div>
+                        <h5 class="card-title">Configuración</h5>
+                        <p class="card-text text-muted small">Ajustes del sistema y parámetros</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de actividad reciente -->
+    <div class="recent-activity-section">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0">
+                <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Actividad Reciente</h5>
+            </div>
+            <div class="card-body">
+                <div class="activity-timeline">
+                    @foreach (var activity in GetRecentActivities())
+                    {
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="bi @activity.Icon"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1">@activity.Description</p>
+                                <small class="text-muted">@activity.Timestamp.ToString("g")</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <a href="/admin/registros" class="btn btn-sm btn-outline-primary mt-3">Ver todos los registros</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas rápidas -->
+    <div class="stats-section mt-5">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="stat-card bg-primary text-white">
+                    <i class="bi bi-file-earmark-text stat-icon"></i>
+                    <div class="stat-value">@GetTotalCertificates()</div>
+                    <div class="stat-label">Certificados</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-success text-white">
+                    <i class="bi bi-people stat-icon"></i>
+                    <div class="stat-value">@GetActiveStudents()</div>
+                    <div class="stat-label">Estudiantes Activos</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-warning text-white">
+                    <i class="bi bi-exclamation-triangle stat-icon"></i>
+                    <div class="stat-value">@GetPendingValidations()</div>
+                    <div class="stat-label">Validaciones Pendientes</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-info text-white">
+                    <i class="bi bi-person-check stat-icon"></i>
+                    <div class="stat-value">@GetAdminUsers()</div>
+                    <div class="stat-label">Administradores</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string GetUserName()
+    {
+        // Implementa lógica para obtener el nombre del usuario
+        return "Administrador"; // Ejemplo
+    }
+
+    private int GetPendingCertificates()
+    {
+        // Lógica para obtener certificados pendientes
+        return 12; // Ejemplo
+    }
+
+    private List<ActivityItem> GetRecentActivities()
+    {
+        // Ejemplo de datos - implementa tu propia lógica
+        return new List<ActivityItem>
+        {
+            new ActivityItem { Icon = "bi-file-earmark-plus", Description = "Nuevo certificado registrado #12345", Timestamp = DateTime.Now.AddHours(-1) },
+            new ActivityItem { Icon = "bi-shield-check", Description = "Certificado #12344 validado", Timestamp = DateTime.Now.AddHours(-2) },
+            new ActivityItem { Icon = "bi-person-plus", Description = "Nuevo estudiante registrado", Timestamp = DateTime.Now.AddHours(-3) }
+        };
+    }
+
+    private int GetTotalCertificates() => 245; // Ejemplo
+    private int GetActiveStudents() => 189; // Ejemplo
+    private int GetPendingValidations() => 8; // Ejemplo
+    private int GetAdminUsers() => 3; // Ejemplo
+
+    private class ActivityItem
+    {
+        public string Icon { get; set; }
+        public string Description { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+}
+
+<style>
+    .admin-home-container {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .admin-welcome-header {
+        border-radius: 8px;
+    }
+
+    .quick-access-card {
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+        .quick-access-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--bs-primary);
+        }
+
+    .icon-container {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-primary-light {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .bg-success-light {
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+
+    .bg-warning-light {
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .activity-timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .activity-item {
+        position: relative;
+        padding-bottom: 20px;
+        border-left: 2px solid #e0e0e0;
+        padding-left: 20px;
+    }
+
+        .activity-item:last-child {
+            border-left: 0;
+        }
+
+    .activity-icon {
+        position: absolute;
+        left: -30px;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border: 2px solid var(--bs-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bs-primary);
+    }
+
+    .stat-card {
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        height: 100%;
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+</style>

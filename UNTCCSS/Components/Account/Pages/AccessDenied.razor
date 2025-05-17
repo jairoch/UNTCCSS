@@ -1,0 +1,34 @@
+﻿@page "/Account/AccessDenied"
+@inject NavigationManager Navigation
+
+<PageTitle>Acceso Denegado</PageTitle>
+
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center p-4 border rounded shadow-lg bg-white" style="max-width: 400px;">
+        <i class="bi bi-x-circle text-danger" style="font-size: 3rem;"></i>
+        <h1 class="text-danger mt-3">Acceso Denegado</h1>
+        <p class="text-muted">No tienes los permisos necesarios para acceder a este recurso.</p>
+        <p class="text-muted small">
+            Redirigiendo al inicio en <span>@Counter</span> segundos...
+        </p>
+    </div>
+</div>
+
+@code {
+    private int Counter = 3;
+
+    protected override async Task OnInitializedAsync()
+    {
+        while (Counter > 0)
+        {
+            await Task.Delay(1000); // Espera 1 segundo
+            Counter--; // Reduce el contador
+            StateHasChanged(); // Actualiza la UI
+        }
+
+        // Redirigir al Home después de la cuenta regresiva
+        Navigation.NavigateTo("/admin/home");
+    }
+}
+

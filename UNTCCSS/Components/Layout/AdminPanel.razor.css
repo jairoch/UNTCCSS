@@ -1,0 +1,303 @@
+﻿/* ===================================================
+   📌 WRAPPER GENERAL - Contenedor Principal
+====================================================== */
+.wrapper {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+}
+
+/* ===================================================
+   📌 SIDEBAR - Estilos Principales
+====================================================== */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height:100%;
+    background: #FFFFFF;
+    z-index: 11;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+    /* 📌 Scroll personalizado */
+    #sidebar::-webkit-scrollbar {
+        width: 5px;
+        display: none;
+    }
+
+    #sidebar:hover::-webkit-scrollbar {
+        display: block;
+    }
+
+    #sidebar::-webkit-scrollbar-thumb {
+        background-color: #7F7F7F;
+        border-radius: 5px;
+    }
+
+/* 📌 Encabezado del Sidebar */
+.sidebar-header {
+    height: 64px;
+    border-bottom: 1px solid #C5C6C6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .sidebar-header img {
+        width: 54px;
+        height: 50px;
+        margin-right: 15px;
+    }
+
+/* 📌 Menú del Sidebar */
+#sidebar ul.components {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80vh;
+}
+
+ul.components > li.small-screen {
+    margin-top: auto;
+}
+
+#sidebar ul li {
+    color: #333;
+    justify-content: flex-start;
+}
+
+::deep #sidebar ul li .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#sidebar ul li i {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+/* 📌 Efecto hover en enlaces */
+::deep #sidebar ul li .nav-link :hover {
+    color: #2230B0;
+}
+
+    /* 📌 Enlace activo */
+    ::deep #sidebar ul li .nav-link.active {
+        color: #2230B0;
+        font-weight: 600;
+        background-color: rgba(200, 200, 200, 0.2);
+        border: 1px solid var(--border-color);
+    }
+
+/* 📌 Menú de navegación oculto
+    en pantallas pequeñas */
+.small-screen {
+    visibility: hidden;
+}
+
+    .small-screen > ul > li {
+        padding: 0px !important;
+        list-style-type: none;
+    }
+
+        .small-screen > ul > li.dropdown {
+            padding: 0px 5px !important;
+        }
+
+/* 📌 Submenú dentro del sidebar */
+#sidebar .menu {
+    position: relative;
+    left: 40px;
+    margin-right: 40px;
+}
+
+/* =============================
+   📌 Clases cuando el sidebar está activo
+============================= */
+
+/* 📌 Sidebar reducido */
+#sidebar.active {
+    width: 80px;
+    overflow: visible;
+}
+
+    /* 📌 Ocultar marca al reducir */
+    #sidebar.active .sidebar-header .marca {
+        visibility: hidden;
+    }
+
+    /* 📌 Ajuste de imagen en el encabezado al reducir */
+    #sidebar.active .sidebar-header img {
+        margin-left: 135px;
+    }
+
+    /* 📌 Submenú cuando el sidebar está reducido */
+    #sidebar.active .menu {
+        position: absolute;
+        left: 65px;
+        width: 160px;
+        top: 0;
+        border: 1px solid var(--border-color);
+        z-index: 1;
+    }
+
+    /*===Oculta el texto al Reducir===*/
+    #sidebar.active ul li .nav-link span {
+        display:none;
+    }
+
+    /*===Alinear Iconos al centro al reducir*/
+::deep #sidebar.active ul li .nav-link {
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ===================================================
+   📌 CONTENIDO PRINCIPAL
+====================================================== */
+
+.top-navbar {
+    position: fixed;
+    height: 64px;
+    width: calc(100% - 260px);
+    background-color: #2196F3;
+    color: white;
+    transition: width 0.3s ease-in-out;
+    z-index: 5;
+}
+
+
+#content {
+    transition: all 0.3s;
+    width: calc(100% - 260px);
+    float: right;
+}
+
+    #content.active {
+        width: calc(100% - 80px);
+    }
+
+/* 📌 Contenedor principal */
+.main-content {
+    margin-top: 60px;
+    min-height: 60vh;
+    width: 100%;
+    z-index: 0;
+}
+
+/* 📌 Ajuste del navbar cuando el sidebar está retraído */
+#sidebar.active ~ #content .top-navbar {
+    transition: width 0s ease-in-out;
+    width: calc(100% - 80px);
+}
+
+/* 📌 Botón de menú */
+button {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 25px;
+}
+
+form button {
+    background: #FF480B;
+    padding: 5px;
+    color: white;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+form button:hover {
+    background: #C72F14;
+}
+
+::deep .top-navbar li .nav-link{
+    display: flex;
+    margin-right: 20px;
+}
+    /* 📌 Notificaciones en la navbar */
+    .navbar .notification {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        background: #d9534f;
+        color: white;
+        padding: 1px 5px;
+        font-size: 10px;
+        border-radius: 2px;
+        text-align: center;
+    }
+
+/* ===================================================
+   📌 MENÚS DESPLEGABLES
+====================================================== */
+
+::deep .menuperfilsidebar > li > .nav-link{
+    margin-top: 2px !important;
+    padding: 7px 0 !important;
+}
+
+.menuperfilbartop {
+    top: 40px;
+    right: 0;
+    min-width: 230px;
+}
+.dropdown button span {
+    font-size: 17px;
+    color: #3A3F3E;
+}
+
+.dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: block; /* Para evitar problemas con la visibilidad */
+    visibility: hidden;
+    pointer-events: none;
+}
+
+    .dropdown-menu.show {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        pointer-events: auto;
+    }
+/* ===================================================
+   📌 MEDIA QUERIES (RESPONSIVE DESIGN)
+====================================================== */
+@media (max-width: 991px) {
+    #sidebar {
+        transform: translateX(-100%);
+        overflow: visible;
+    }
+
+    ::deep #sidebar ul li .nav-link {
+        justify-content: start;
+    }
+
+    .small-screen {
+        visibility: visible;
+    }
+    .top-navbar {
+        width: 100% !important;
+    }
+
+    #content {
+        width: 100%;
+    }   
+    /* 📌 Sidebar en pantallas pequeñas */
+    #sidebar.show-nav, .body-overlay.show-nav {
+        transform: translateX(0%);
+        display: block;
+        visibility: visible;
+        z-index: 15;
+    }
+}

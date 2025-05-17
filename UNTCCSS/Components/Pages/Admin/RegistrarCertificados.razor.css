@@ -1,0 +1,32 @@
+﻿body {
+}
+
+.background-form {
+    background: #FAF9F9;
+}
+
+.font-size-menssegue{
+    font-size: 0.9rem;
+}
+
+.custom-button {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 8px;
+    padding: 7px 15px;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+    .custom-button:hover {
+        background: linear-gradient(135deg, #0056b3, #003f7f);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .custom-button:active {
+        transform: scale(0.98);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }

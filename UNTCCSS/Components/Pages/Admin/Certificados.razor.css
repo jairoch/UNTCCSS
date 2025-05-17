@@ -1,0 +1,51 @@
+﻿body{
+}
+
+#dropdownFiltroFecha {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.table-responsive{
+    min-height: 450px;
+}
+
+.color-content {
+    background: #F5F4F4;
+}
+::deep thead {
+    background: #F5F4F4;
+    cursor: pointer;
+    border-top:hidden;
+    border-left:hidden;
+    border-right:hidden;
+}
+
+.collapse-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    visibility: collapse;
+}
+    .collapse-content.show {
+        visibility: visible;
+        opacity: 1;
+    }
+
+.btn-options2 {
+    background: white;
+    color: blue;
+    font-size: 20px;
+    padding:2px 6px;
+    border: 1px solid blue;
+}
+
+    .btn-options2:hover {
+        background: blue;
+        color: white;
+        transform: scale(1.02); /* Efecto de crecimiento suave */
+        box-shadow: 0px 4px 10px rgba(0, 0, 255, 0.3); /* Sombra azul elegante */
+    }

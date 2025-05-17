@@ -1,0 +1,19 @@
+﻿@using UNTCCSS.Components.Account.Shared
+
+<CascadingAuthenticationState>
+    <CascadingBlazoredModal AnimationType="ModalAnimationType.FadeInOut" HideHeader="true">
+        <Router AppAssembly="typeof(Program).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+                    <NotAuthorized>
+                        <RedirectToLogin />
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+
+            </NotFound>
+        </Router>
+    </CascadingBlazoredModal>
+</CascadingAuthenticationState>

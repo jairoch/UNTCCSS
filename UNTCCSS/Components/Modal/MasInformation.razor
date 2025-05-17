@@ -1,0 +1,28 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">Información</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+<hr />
+<div>
+    <p style="text-align: justify;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vel suscipit dui, eu convallis felis. Pellentesque urna quam, varius eget tellus vitae, consequat pretium elit. Nullam ultricies interdum dui, a porttitor risus sodales vitae. Praesent vel lorem tincidunt, accumsan augue non, venenatis odio. Maecenas augue diam, rhoncus aliquet lectus sit amet, pulvinar pellentesque lorem. Etiam pretium nisi eu malesuada egestas. Aenean ex quam, egestas vel auctor tristique, egestas sit amet nisi. Cras metus urna, gravida consequat dui a, tincidunt fringilla nisl.
+
+        Phasellus porttitor magna scelerisque ornare vulputate. Fusce non massa tortor. Etiam libero nisl, ultrices ut ultrices non, pretium non nisl. Nunc quis dolor a metus efficitur fermentum. Suspendisse sagittis laoreet purus, quis cursus felis egestas ut. Vestibulum lobortis lacus non odio tristique, non venenatis diam feugiat. Aliquam est mauris, dignissim et dignissim ac, consequat luctus sem. Aliquam molestie ipsum vitae tortor aliquet, quis varius lectus porta. Suspendisse posuere, erat eu bibendum cursus, ante purus feugiat nisi, at finibus dui elit eget est. Etiam dapibus magna sed aliquet vestibulum. Vivamus felis orci, ullamcorper pharetra dictum nec, varius eget mauris.
+
+        Duis elementum varius arcu, at aliquet odio congue convallis. Quisque pellentesque ex ut velit maximus, tempor pellentesque ante aliquam. Nulla quis aliquet lorem. Sed luctus mauris at odio cursus sodales. Vestibulum porttitor ligula quis quam imperdiet, ut congue felis eleifend. Fusce pulvinar porttitor libero, a pharetra ipsum elementum nec. Quisque ut lorem vitae orci euismod consectetur a a velit. Aenean facilisis mauris mauris, et elementum ex consectetur non. Vestibulum molestie nisi lacus, sit amet faucibus tellus consectetur at. Curabitur id nisi erat. Cras egestas sapien vel urna pulvinar, vitae vulputate nulla tristique.
+    </p>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task Close()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+}

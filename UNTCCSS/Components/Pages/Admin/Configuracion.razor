@@ -1,0 +1,11 @@
+﻿@using UNTCCSS.Components.Layout
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/configuration"
+@layout AdminPanel
+@attribute [Authorize(Policy = "Configuracion")]
+
+<h3>Configuracion</h3>
+
+@code {
+
+}

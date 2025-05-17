@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "1",
+    "Name": "Admin",
+    "NormalizedName": "ADMIN",
+    "ConcurrencyStamp": "6cda19c4-1f1e-4a54-9b9d-9e445a67b4e3",
+    "Descripcion": "Rol con acceso total al sistema",
+    "Status": true
+  },
+  {
+    "Id": "2",
+    "Name": "Empresa",
+    "NormalizedName": "EMPRESA",
+    "ConcurrencyStamp": "7f5a19c4-1f1e-4a54-9b9d-9e445a67b4e3",
+    "Descripcion": "Rol con permisos de administración de usuarios dentro de su empresa",
+    "Status": true
+  },
+  {
+    "Id": "3",
+    "Name": "Registrador",
+    "NormalizedName": "REGISTRADOR",
+    "ConcurrencyStamp": "d7a45bd1-edfd-444f-bb3f-dd61eef2eb8b",
+    "Descripcion": "Rol con permisos para registrar certificados",
+    "Status": true
+  },
+  {
+    "Id": "4",
+    "Name": "Predeterminado",
+    "NormalizedName": "PREDETERMINADO",
+    "ConcurrencyStamp": "3f2c9b1d-9c4f-4e5b-b2c8-2e1d2a9c3d45",
+    "Descripcion": "Rol con permisos mínimos del sistema",
+    "Status": true
+  }
+]

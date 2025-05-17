@@ -1,0 +1,105 @@
+﻿@using UNTCCSS.Data
+@using UNTCCSS.ModelsDto
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<style>
+</style>
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">Configuración de Usuarios y Roles</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+<hr />
+<div class="modal-body">
+    <!-- Información del Usuario -->
+    <div class="d-flex align-items-center mb-3">
+        <div class="border d-flex align-items-center justify-content-center mb-2" style="border-radius: 50%; width: 70px; height: 70px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 25 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+        </div>
+        <div class="ms-3">
+            <h5 class="mb-0">@User.Nombres @User.Apellidos</h5>
+            <small class="text-muted"><i class="bi bi-envelope"></i> @User.Correo</small>
+        </div>
+    </div>
+
+    <!-- Asignación de Roles -->
+    <h6 class="text-primary mt-3"><i class="bi bi-shield-lock"></i> Roles Asignados</h6>
+    <div class="list-group mb-3">
+        @if (User.Roles != null && User.Roles.Any())
+        {
+            @foreach (var role in User.Roles)
+            {
+                <div class="input-group mb-2">
+                    <div class="list-group-item flex-grow-1 rounded-start">
+                        <span>@role</span>
+                    </div>
+                    <button class="btn btn-outline-danger border-danger" @onclick="() => RemoveRole(role)">
+                        <i class="bi bi-trash"></i> Quitar
+                    </button>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No tiene roles asignados.</p>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(MensajeClear))
+    {
+        <div class="alert alert-danger mt-2 p-2 text-center" role="alert" style="font-size: 0.9rem;">
+            @MensajeClear
+        </div>
+    }
+
+    <!-- Agregar Roles -->
+    <h6 class="text-primary"><i class="bi bi-plus-circle"></i> Agregar Rol</h6>
+    <div class="input-group mb-3">
+        <select class="form-select" @bind="selectedRole">
+            <option disabled selected>Selecciona un rol</option>
+            @foreach (var rol in ListaRoles)
+            {
+                // Si es Admin, puede ver todos los roles
+                // Si no es Admin, NO puede ver el rol "Admin"
+                if (authData.Roles.Contains("Admin") || rol.Name != "Admin")
+                {
+                    <option value="@rol.Id">@rol.Name</option>
+                }
+            }
+        </select>
+        <button class="btn btn-outline-primary" @onclick="AddRole">
+            <i class="bi bi-plus"></i> Agregar
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(MensajeAdd))
+    {
+        <div class="alert alert-warning mt-2 p-2 text-center" role="alert" style="font-size: 0.9rem;">
+            @MensajeAdd
+        </div>
+    }
+
+    <!-- Descripción del Rol Seleccionado -->
+    @if (!string.IsNullOrEmpty(selectedRole))
+    {
+        var rolSeleccionado = ListaRoles.FirstOrDefault(r => r.Id == selectedRole);
+        if (rolSeleccionado != null)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title roboto-bold">@rolSeleccionado.Name</h6>
+                    <p class="card-text text-muted">
+                        @rolSeleccionado.Descripcion <!-- Asume que el objeto "rol" tiene una propiedad "Description" -->
+                    </p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+
+}

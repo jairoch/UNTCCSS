@@ -1,0 +1,73 @@
+﻿@using UNTCCSS.Data
+@using UNTCCSS.Models
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">@Title</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+<hr />
+
+@if (rol != null )
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">@rol.Name</h5>
+            <p class="card-text">@rol.Descripcion</p>
+
+            <h6>Permisos asignados</h6>
+            <ul class="list-group mb-4">
+                @if (rol.RolPermisos != null)
+                {
+                    @foreach (var permiso in rol.RolPermisos.Select(rp => rp.Permisos))
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @permiso.Name
+                            <button class="btn btn-sm btn-danger" @onclick="() => QuitarPermiso(permiso.Id)">
+                                <i class="fas fa-trash"></i> Quitar
+                            </button>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item text-muted">No hay permisos asignados.</li>
+                }
+            </ul>
+
+            <h6>Agregar permisos</h6>
+            <div class="mb-3">
+                <select class="form-select" @bind="nuevoPermisoId">
+                    <option value="">Seleccione un permiso</option>
+                    @if(permisosDisponibles.Any())
+                    {
+                        @foreach (var permiso in permisosDisponibles)
+                        {
+                            <option value="@permiso.Id">@permiso.Name</option>
+                        }
+                    }                   
+                </select>
+            </div>
+            <button class="btn btn-primary w-100" @onclick="AgregarPermiso" disabled="@(nuevoPermisoId == 0)">
+                <i class="fas fa-plus"></i> Agregar Permiso
+            </button>
+        </div>
+    </div>
+}
+else
+{
+    <p>Cargando...</p>
+}
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task Close()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+}

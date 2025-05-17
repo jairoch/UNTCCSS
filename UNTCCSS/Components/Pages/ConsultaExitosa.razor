@@ -1,0 +1,171 @@
+﻿@page "/consulta-exitosa/{token}"
+@using UNTCCSS.Components.Layout
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@layout MainLayout
+
+<style>
+    .title-cards{
+        max-width: 300px;
+        margin-left: 10px;
+        background: linear-gradient(to right, #007bff, #00c6ff);
+        color: white;
+    }
+
+    .custombtn-download {
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #007BFF, #0056b3);
+        color: #fff;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+
+        .custombtn-download:hover {
+            background: linear-gradient(135deg, #0056b3, #003d82);
+            transform: translateY(-3px);
+        }
+
+        .custombtn-download:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+
+</style>
+
+
+<div class="container d-flex flex-column justify-content-center min-vh-100">
+
+    <div class="mt-3">
+        <div class="alert alert-success p-2 px-3" role="alert">
+            <h5 style="color: forestgreen" class="roboto-bold m-0">Validación Exitosa</h5>
+            Los certificados del estudiante han sido validados correctamente
+        </div>
+
+        @* Datos del estudiante *@
+        <div class="mt-3 mb-4">
+            <div class="bg-info rounded-top title-cards">
+                <h6 class="p-2 m-0">Datos del Estudiante</h6>
+            </div>
+            <div class="card bg-light border-0 shadow p-3 roboto-regular">
+                <p style="font-size: 1.5rem;"><strong class="roboto-bold">Nombres</strong> @NombreCompleto</p>
+                <p><strong>DNI:</strong> @estudiante.DNI</p>
+                <p><strong>Correo Electrónico:</strong> @estudiante.Email</p>
+            </div>
+        </div>
+    </div>
+
+    @* Lista de certificados en cards *@
+    <div>
+        <h4 class="ms-3 roboto-bold">Cursos</h4>
+        <hr class="mt-0" />
+        <div class="row">
+            @foreach (var certificado in Certificados)
+            {
+                string archivo = certificado.Archivo;
+                bool deshabilitado = string.IsNullOrWhiteSpace(archivo);
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title roboto-bold m-0" style="color: #525454;">
+                                <i class="bi bi-patch-check-fill me-2" style="color: deepskyblue;"></i>
+                                @certificado.TipoDocumento
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="open-sans-bold m-0" style="font-size: 1.3rem;"><strong class="roboto-bold">Curso:</strong> @certificado.Nombre</p>
+                                <button class="btn btn-primary p-2 custombtn-download" @onclick="() => DescargarCertificado(archivo)"
+                                        disabled="@deshabilitado">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+                            <div class="row justify-content-between mt-3">
+                                <div class="col-12 col-sm-12 col-md-6">
+                                    <p><strong>Nota Final:</strong> @certificado.PromedioFinal</p>
+                                    <p><strong>Inicio:</strong> @certificado.FechaInicio.ToShortDateString()</p>
+                                    <p><strong>Término:</strong> @certificado.FechaTermino.ToShortDateString()</p>
+                                    <p><strong>Expedición:</strong> @certificado.FechaEmision.ToShortDateString()</p>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-4 p-0">
+                                    <div class="border rounded-top">
+                                        <h6 class="bg-light p-2 rounded-top m-0 roboto-bold">REGISTRADO</h6>
+                                        <div class="p-2 border-top">
+                                            <p><strong>Libro: </strong>01</p>
+                                            <p><strong>Folio: </strong>23</p>
+                                            <p class="m-0"><strong>Codigo: </strong>345</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @* Botones de acción *@
+    <div class="mt-1">
+       @*  <a href="https://wa.me/967607828" class="btn btn-success">
+            <i class="bi bi-whatsapp"></i> Más información
+        </a> *@
+        <button class="btn btn-primary" @onclick="MostrarFormularioCorreo">
+            <i class="bi bi-envelope-fill"></i> Consulta por correo
+        </button>
+    </div>
+</div>
+
+@* Modal para consulta por correo *@
+@if (MostrarCorreo)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enviar consulta por correo</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModalCorreo"></button>
+                </div>
+                <EditForm Model="MensajeEmail" OnSubmit="SendEmailCliente">
+                    <div class="modal-body p-1">
+
+                        <!-- 📌 Input para número de celular o correo -->
+                        <InputText class="form-control mb-2 rounded-0 no-outline" required
+                                   placeholder="Ingrese su número de celular o correo electrónico..."
+                                   @bind-Value="ContactoUsuario" />
+
+                        <InputTextArea class="form-control rounded-0" rows="3" required style="box-shadow: none;"
+                                       placeholder="Escribe tu mensaje aquí..." @bind-Value="MensajeEmail" />
+                    </div>
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModalCorreo">Cerrar</button>
+                        <button type="submit" class="btn btn-primary me-3 d-flex align-items-center" disabled="@EnviandoCorreo">
+                            @if (EnviandoCorreo)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                <span>Enviando...</span>
+                            }
+                            else
+                            {
+                                <span>Enviar</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>               
+            </div>
+        </div>
+    </div>
+}
+
+<script src="js/DownloadPdf.js"></script>
+
+@code {
+
+    private bool EnviandoCorreo = false;
+}

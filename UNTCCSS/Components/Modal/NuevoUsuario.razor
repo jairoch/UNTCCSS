@@ -1,0 +1,153 @@
+﻿@using UNTCCSS.Components.Account.Shared
+@using UNTCCSS.Components.Messege
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">Crear una nueva cuenta</span>
+    <button @onclick="Close" class="btn-close p-2" aria-label="Close"></button>
+</div>
+<hr />
+
+@if (!string.IsNullOrEmpty(Message))
+    {
+        <div class="mt-3">
+            <StatusMessage Message="@Message"></StatusMessage>
+        </div>
+    }
+
+<div class="mt-2">
+    <EditForm Model="Input" OnValidSubmit="RegisterUser" FormName="register">
+        <DataAnnotationsValidator />
+        @* <ValidationSummary class="text-danger" role="alert" /> *@
+
+        <div class="form-floating mb-3">
+            <select @bind="Input.IdEmpresa" class="form-select" id="Input.Empresa" required>
+                <option value="">Seleccione una empresa</option>
+                @foreach (var empresa in Empresas)
+                {
+                    <option value="@empresa.Id">@empresa.Nombre</option>
+                }
+            </select>
+            <label for="Input.Empresa">Empresa</label>
+            <ValidationMessage For="() => Input.IdEmpresa" class="text-danger" />
+        </div>
+        <div class="row">
+            <!-- DNI -->
+            <div class="col-12 col-md-4">
+                <div class="mb-3">
+                    <InputText @bind-value="Input.Dni" id="Input.Dni" class="form-control" aria-required="true"
+                               placeholder="Ingrese su DNI" required />
+                    <ValidationMessage For="() => Input.Dni" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Nombres -->
+            <div class="col-12 col-md-8">
+                <div class="mb-3">
+                    <InputText type="text" @bind-Value="Input.Nombres" id="Input.Nombres" class="form-control"
+                               aria-required="true" placeholder="Ingrese sus nombres" required />
+                    <ValidationMessage For="() => Input.Nombres" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <InputText type="text" @bind-Value="Input.Apellidos" id="Input.Apellidos" class="form-control"
+                               aria-required="true" placeholder="Ingrese sus apellidos" required />
+                    <ValidationMessage For="() => Input.Apellidos" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Input.Telefono" id="Input.Telefono" class="form-control"
+                                     aria-required="true" placeholder="Ingrese su teléfono" required />
+                        <span class="input-group-text">
+                            <i class="bi bi-telephone-fill"></i>
+                        </span>
+                    </div>
+                    <ValidationMessage For="() => Input.Telefono" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-3">
+                    <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control"
+                               autocomplete="username" aria-required="true" placeholder="name@example.com" required />
+                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                </div>
+
+            </div>
+            <!-- Contraseña -->
+            <div class="col-12 col-md-6">
+                <div class="mb-3 position-relative">
+                    <div class="input-group">
+                        <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control"
+                                   autocomplete="new-password" aria-required="true" placeholder="Contraseña" required />
+                        <!-- Botón ojito -->
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('Input.Password', 'eyeIconPassword')">
+                            <i id="eyeIconPassword" class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password"
+                                   aria-required="true" placeholder="**********" required />
+                        <!-- Botón ojito -->
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('Input.ConfirmPassword', 'eyeIconConfirm')">
+                            <i id="eyeIconConfirm" class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                </div>
+            </div>
+
+            <!-- Botón para generar contraseña segura -->
+            <div class="col-12 col-md-6">        
+                <div class="mb-3">
+                    <button type="button" class="btn btn-warning" @onclick="() => GenerarContraseñaSegura()">Generar Contraseña Segura</button>
+                </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <InputText type="text" @bind-Value="Input.Direccion" id="Input.Direccion" class="form-control"
+                               aria-required="true" placeholder="Dirección" required />
+                    <ValidationMessage For="() => Input.Direccion" class="text-danger" />
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="w-100 btn btn-primary roboto-regular" disabled="@IsProcessing">
+            @(IsProcessing ? "Registrando..." : "Crear nuevo usuario")
+            @if (IsProcessing)
+            {
+                <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+            }
+        </button>
+    </EditForm>
+</div>
+
+<script src="js/Modal/NuevoUsuario.js"></script>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task Close()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+}

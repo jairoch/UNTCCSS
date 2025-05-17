@@ -1,0 +1,58 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal-header d-flex justify-content-between">
+    <span class="modal-title roboto-medium">@Title</span>
+    <button @onclick="Cancelar" class="btn-close p-2" aria-label="Close"></button>
+</div>
+
+<hr />
+
+<div class="modal-body">
+    <div class="alert @GetAlertClass() d-flex align-items-center" role="alert">
+        <span>@Mensaje</span>
+    </div>
+</div>
+
+<div class="modal-footer d-flex justify-content-end">
+    <button class="btn btn-secondary me-2" @onclick="Cancelar">
+        <i class="bi bi-x-circle me-1"></i> Cancelar
+    </button>
+    <button class="btn @GetButtonClass()" @onclick="Aceptar">
+        <i class="bi bi-check-circle me-1"></i> Aceptar
+    </button>
+</div>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    [Parameter] public string Title { get; set; } = "Confirmación";
+    [Parameter] public string Mensaje { get; set; } = "¿Estás seguro de realizar esta acción?";
+    [Parameter] public string Tema { get; set; } = "warning"; // Puede ser "success", "warning", "error"
+
+    private async Task Aceptar()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    }
+
+    private async Task Cancelar()
+    {
+        await BlazoredModal.CloseAsync(ModalResult.Ok(false));
+    }
+
+    private string GetAlertClass() => Tema switch
+    {
+        "success" => "alert alert-success",
+        "error" => "alert alert-danger",
+        _ => "alert alert-warning"
+    };
+
+    private string GetButtonClass() => Tema switch
+    {
+        "success" => "btn btn-success",
+        "error" => "btn btn-danger",
+        _ => "btn btn-warning"
+    };
+}
+

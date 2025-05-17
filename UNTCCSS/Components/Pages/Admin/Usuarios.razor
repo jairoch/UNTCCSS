@@ -1,0 +1,254 @@
+﻿@using UNTCCSS.Components.Account.Shared
+@using UNTCCSS.Components.Layout
+@using UNTCCSS.Components.Messege
+@using UNTCCSS.ModelsDto
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/usuarios"
+@layout AdminPanel
+@attribute [Authorize(Policy = "Usuarios")]
+
+<PageTitle>Usuarios</PageTitle>
+
+<link rel="stylesheet" href="css/tabla.css">
+
+<div class="container p-2">
+    <div>
+        <button class="btn btn-primary roboto-regular" @onclick="MostrarModal">Nuevo Usuario</button>
+    </div>
+
+    <div class="mt-2 d-flex">
+        <div class="input-group me-3">
+            <InputText class="form-control" placeholder="Buscar..." @bind-Value="filtroTexto" />
+
+            <button type="button" class="btn btn-outline-secondary" @onclick="BuscarUsuarios">
+                Buscar
+            </button>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" @onclick="@(() => filtroTipo = "Dni")">Dni</a></li>
+                <li><a class="dropdown-item" @onclick="@(() => filtroTipo = "Nombre")">Nombre</a></li>
+                <li><a class="dropdown-item" @onclick="@(() => filtroTipo = "Roles")">Roles</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" @onclick="RestablecerFiltro">Restablecer</a></li>
+            </ul>
+        </div>
+        <!-- Paginación -->
+        @if (Tabla != null && ListaUsuarios.Any())
+        {
+            <div class="d-flex flex-row justify-content-end open-sans-regular">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+
+                        <!-- Página anterior -->
+                        <li class="page-item @((Pagina == 1) ? "disabled" : "")">
+                            <a class="page-link" @onclick="() => CambiarPagina(Pagina - 1)">&laquo;</a>
+                        </li>
+
+                        <!-- Show Page Numbers -->
+                        @for (var i = 1; i <= TotalPaginas; i++)
+                        {
+                            if (i <= 4 || i == TotalPaginas || (i >= Pagina - 1 && i <= Pagina + 1))
+                            {
+                                <li class="page-item @(i == Pagina ? "active" : "")">
+                                    <a class="page-link" @onclick="() => CambiarPagina(i)">@i</a>
+                                </li>
+                            }
+                            else if (i == 5)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                        }
+
+                        <!-- Página siguiente -->
+                        <li class="page-item @(Pagina == TotalPaginas ? "disabled" : "")">
+                            <a class="page-link" @onclick="() => CambiarPagina(Pagina + 1)">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+
+    </div>
+
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <div class="mt-3">
+            <StatusMessage Message="@Message"></StatusMessage>
+        </div>
+    }
+
+    @if (Tabla != null && ListaUsuarios.Any())
+    {
+        <div class="table-responsive border border rounded-2 mt-2" style="min-height: 400PX;">
+            <table class="roboto-regular">
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Correo</th>
+                        <th class="text-center">Estado</th>
+                        <th>Roles</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in ListaUsuarios)
+                    {
+                        string Id = user.Id;
+                        <tr>
+                            <td>@user.Dni</td>
+                            <td>@user.Nombres</td>
+                            <td>@user.Apellidos</td>
+                            <td>@user.Correo</td>
+                            <td style="padding-top: 10px;">
+                                @if (!user.Blokeado)
+                                {
+                                    <span class="estado-activo">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="estado-suspendido">Suspendido</span>
+                                }
+                            </td>
+                            <td>
+                                <ul class="list-unstyled d-flex flex-column">
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <li class="Roles mb-2">@role</li>
+                                    }
+                                </ul>
+                            </td>
+@*                             <td>
+                                <ul class="list-unstyled d-flex flex-column">
+                                    @if (user.Permisos?.Any() == true)
+                                    {
+                                        @foreach (var permiso in user.Permisos)
+                                        {
+                                            <li class="Permisos mb-1">@permiso.Name</li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li class="Permisos">Sin Permisos</li>
+                                    }
+                                </ul>
+                            </td> *@
+                            <td>
+                                <!-- Dropdown de opciones -->
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-options" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-animation-table" aria-labelledby="dropdownMenuButton1">
+                                        <li>
+                                            <button class="dropdown-item">
+                                                <i class="bi bi-info-circle me-2"></i> Más detalles
+                                            </button>
+                                        </li>
+                                        <li>
+                                            @* Un Admin o Empresa edite roles.
+                                            No puedan editarse a sí mismos.
+                                            No puedan editar a otros Admins *@
+                                            @if (Id != UserId &&
+                                           (authData.Roles.Contains("Admin") || authData.Permisos.Contains("GestionarUsuarios")) &&
+                                            !user.Roles.Any(r => r.Name == "Admin"))
+                                            {
+                                                <button class="dropdown-item" @onclick="() => ConfigurationRole(Id)">
+                                                    <i class="bi bi-shield-check me-2"></i> Roles
+                                                </button>
+                                            }
+
+                                        </li>
+                                        <li>
+                                            @* Un Admin o Empresa CambiarEstado.
+                                            No puedan cambiar estado a sí mismos.
+                                            No puedan cambiar estado a otros Admins *@
+                                            @if (Id != UserId &&
+                                           (authData.Roles.Contains("Admin") || authData.Roles.Contains("GestionarUsuarios")) &&
+                                            !user.Roles.Any(r => r.Name == "Admin"))
+                                            {
+                                                @if (!user.Blokeado)
+                                                {
+                                                    <button class="dropdown-item" @onclick="() => CambiarEstado(Id)">
+                                                        <i class="bi bi-slash-circle me-2"></i> Suspender
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="dropdown-item" @onclick="() => CambiarEstado(Id)">
+                                                        <i class="bi bi-check-circle me-2"></i> Activar
+                                                    </button>
+                                                }
+                                            }                                           
+                                        </li>
+                                        <li>
+                                            @* Un Admin o Empresa Eliminar.
+                                            No puedan Eliminarse a sí mismos.
+                                            No puedan Eliminar a otros Admins *@
+                                            @if (Id != UserId &&
+                                           (authData.Roles.Contains("Admin") || authData.Roles.Contains("GestionarUsuarios")) &&
+                                            !user.Roles.Any(r => r.Name == "Admin"))
+                                            {
+                                                <button class="dropdown-item eliminar" @onclick="() => DeleteUser(Id)">
+                                                    <i class="bi bi-trash me-2"></i> Eliminar
+                                                </button>
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center mt-5">
+            <i class="bi bi-exclamation-circle text-muted" style="font-size: 3rem;"></i>
+            <p class="text-muted mt-3" style="font-size: 1.2rem;">
+                No se encontraron registros.
+            </p>
+        </div>
+    }
+
+    @if (RolesResumen?.Any() == true)
+    {
+        <div class="row mt-4">
+            @foreach (var rol in RolesResumen)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex justify-content-between">
+                            <span class="open-sans-semibold">@rol.NombreRol</span>
+                            <div>
+                                @rol.CantidadUsuarios
+                            </div>
+                        </div>
+                        <div class="card-body roboto-regular">
+                            <div class="d-flex justify-content-between">
+                                <p><strong>Usuarios Activos:</strong> @rol.UsuariosActivos</p>
+                                <p><strong>Usuarios Suspendidos:</strong> @rol.UsuariosSuspendidos</p>
+                            </div>
+                            <p><strong>Permisos Asociados:</strong> @(string.Join(", ", rol.Permisos))</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">No hay roles disponibles.</p>
+    }
+</div>
+
+@code {
+   
+}

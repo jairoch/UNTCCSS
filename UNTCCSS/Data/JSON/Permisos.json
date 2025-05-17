@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1,
+    "Name": "GestionarUsuarios",
+    "Status": true,
+    "Descripcion": "Permite gestionar usuarios dentro de la empresa actual, acciones como agregar nuevo, eliminar, suspender y asignar roles."
+  },
+  {
+    "Id": 2,
+    "Name": "GestionarRoles",
+    "Status": true,
+    "Descripcion": "Permite crear, editar y eliminar roles y sus permisos."
+  },
+  {
+    "Id": 3,
+    "Name": "VerCertificados",
+    "Status": true,
+    "Descripcion": "Permite ver certificados emitidos por la empresa a la que pertenece el usuario."
+  },
+  {
+    "Id": 4,
+    "Name": "VerUsuarios",
+    "Status": true,
+    "Descripcion": "Permite ver los usuarios de la misma empresa del usuario actual."
+  },
+  {
+    "Id": 5,
+    "Name": "VerEmpresas",
+    "Status": true,
+    "Descripcion": "Permite ver la información de las empresas registradas."
+  },
+  {
+    "Id": 6,
+    "Name": "VerConfiguracion",
+    "Status": true,
+    "Descripcion": "Permite acceder a la configuración del sistema."
+  },
+  {
+    "Id": 7,
+    "Name": "VerCertificadosAdmin",
+    "Status": true,
+    "Descripcion": "Permite a un administrador ver certificados emitidos de todas las empresas."
+  },
+  {
+    "Id": 8,
+    "Name": "VerUsuariosAdmin",
+    "Status": true,
+    "Descripcion": "Permite a un administrador ver todos los usuarios del sistema."
+  },
+  {
+    "Id": 9,
+    "Name": "CrearCertificados",
+    "Status": true,
+    "Descripcion": "Permite crear certificados para los estudiantes."
+  },
+  {
+    "Id": 10,
+    "Name": "CrearUsuarios",
+    "Status": true,
+    "Descripcion": "Permite crear nuevos usuarios dentro de la empresa a la que se le ha asignado."
+  },
+  {
+    "Id": 11,
+    "Name": "CrearUsuariosAdmin",
+    "Status": true,
+    "Descripcion": "Permite crear nuevos usuarios dentro de cualquier empresa."
+  },
+  {
+    "Id": 12,
+    "Name": "EditarCertificados",
+    "Status": true,
+    "Descripcion": "Permite editar certificados previamente emitidos."
+  },
+  {
+    "Id": 13,
+    "Name": "EliminarCertificados",
+    "Status": true,
+    "Descripcion": "Permite eliminar certificados emitidos."
+  },
+  {
+    "Id": 14,
+    "Name": "EliminarEstudiantes",
+    "Status": true,
+    "Descripcion": "Permite eliminar a los estudiantes y sus certificados."
+  },
+  {
+    "Id": 15,
+    "Name": "ActivarVerificación",
+    "Status": true,
+    "Descripcion": "Permite activar la consulta de los certificados expedidos a los clientes."
+  },
+  {
+    "Id": 16,
+    "Name": "PausarVerificación",
+    "Status": true,
+    "Descripcion": "Permite pausar la consulta de los certificados expedidos a los clientes hasta que se vuelva a activar manualmente."
+  }
+]

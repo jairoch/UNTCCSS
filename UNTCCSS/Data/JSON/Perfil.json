@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "Dni": "12345678",
+    "Nombres": "Jairo",
+    "Apellidos": "Chingo",
+    "Telefono": 967607828,
+    "Email": "jairochingo@outlook.com",
+    "Direccion": "Los Tulipanes 465",
+    "ImagenPerfil": null
+  }
+]

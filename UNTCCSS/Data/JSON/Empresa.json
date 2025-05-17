@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "RUC": "12345678901",
+    "Nombre": "Mas Saben Perú",
+    "RazonSocial": "Empresa Demo",
+    "Telefono": "987654321",
+    "Direccion": "Calle Ficticia 123"
+  },
+  {
+    "Id": 2,
+    "RUC": "98765432109",
+    "Nombre": "Tech Solutions",
+    "RazonSocial": "Tech Solutions SAC",
+    "Telefono": "912345678",
+    "Direccion": "Av. Tecnológica 456"
+  },
+  {
+    "Id": 3,
+    "RUC": "10293847561",
+    "Nombre": "Comercial Andina",
+    "RazonSocial": "Comercial Andina EIRL",
+    "Telefono": "923456789",
+    "Direccion": "Jr. Comercio 789"
+  },
+  {
+    "Id": 4,
+    "RUC": "56473829104",
+    "Nombre": "Innova Corp",
+    "RazonSocial": "Innovaciones Empresariales SAC",
+    "Telefono": "934567890",
+    "Direccion": "Calle Innovación 321"
+  },
+  {
+    "Id": 5,
+    "RUC": "37482910562",
+    "Nombre": "Global Import",
+    "RazonSocial": "Global Importaciones SRL",
+    "Telefono": "945678901",
+    "Direccion": "Av. Aduanas 654"
+  },
+  {
+    "Id": 6,
+    "RUC": "91827364509",
+    "Nombre": "EcoVerde",
+    "RazonSocial": "Soluciones Ecológicas EIRL",
+    "Telefono": "956789012",
+    "Direccion": "Pasaje Verde 987"
+  }
+]

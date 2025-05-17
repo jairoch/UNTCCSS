@@ -1,0 +1,11 @@
+﻿@using UNTCCSS.Components.Layout
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/dashboard"
+@layout AdminPanel
+@attribute [Authorize(Policy = "Dashboard")]
+
+<h3>Dashboard</h3>
+
+@code {
+
+}

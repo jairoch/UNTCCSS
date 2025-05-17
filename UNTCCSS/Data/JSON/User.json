@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "0989809e-e4ee-4852-9abb-6d12abf5e781",
+    "UserName": "Jairo",
+    "NormalizedUserName": "JAIRO",
+    "Email": "jairochingo@outlook.com",
+    "NormalizedEmail": "JAIROCHINGO@OUTLOOK.COM",
+    "EmailConfirmed": true,
+    "PasswordHash": "AQAAAAIAAYagAAAAENjRHZEDEydSd2vpCMAkG9OUib8ydH98lT4rf1bziLvYOOqQ9oCP6C4BBp7SCALRKQ==",
+    "SecurityStamp": "6cda19c4-1f1e-4a54-9b9d-9e445a67b4e3",
+    "ConcurrencyStamp": "ad877341-f227-4a43-9920-11bb53273269",
+    "PhoneNumber": "967607828",
+    "PhoneNumberConfirmed": false,
+    "TwoFactorEnabled": false,
+    "LockoutEnd": null,
+    "LockoutEnabled": false,
+    "AccessFailedCount": 0,
+    "IdEmpresa": 1,
+    "PerfilId": 1,
+    "IsDelete": false
+  }
+]

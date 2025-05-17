@@ -1,0 +1,247 @@
+﻿@using UNTCCSS.Components.Layout
+@using UNTCCSS.Models
+@using Microsoft.AspNetCore.Authorization
+@page "/admin/certificados/registrarCertificados"
+@layout AdminPanel
+@attribute [Authorize(Policy = "RegistrarCertificados")]
+
+<PageTitle>Registrar Certificados</PageTitle>
+
+<div class="container px-2">
+
+    <!-- 🔹 Datos del Estudiante -->
+    <div class="roboto-regular">
+        <div class="bg-primary rounded-top ms-3 px-2 py-1 text-white" style="max-width: 250px;">
+            <span>Datos del Estudiante</span>
+        </div>
+
+        <div class="border rounded background-form">
+            <div class="p-2 mx-2 mt-3">
+                @if (dniBuscado)
+                {
+                    @if (dniBuscado && estudianteExistente != null)
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-success p-2 font-size-menssegue">
+                                <strong>Estudiante encontrado:</strong> @estudianteExistente.Nombres @estudianteExistente.Apellidos
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-warning p-2 font-size-menssegue">
+                                <strong>Estudiante no encontrado.</strong> Complete los datos para registrarlo.
+                            </div>
+                        </div>
+                    }
+                }
+                <!-- Mensaje informativo -->
+                <div class="alert alert-info p-2 roboto-regular font-size-menssegue">
+                    <strong style="color: #2781FF;" class="">Paso 1: Ingrese el DNI del estudiante.</strong>
+                    Se verificará si el estudiante ya está registrado en la base de datos.
+                    <ul class="m-0 ps-3">
+                        <li>✅ Si el estudiante existe, podrá continuar con el registro del certificado.</li>
+                        <li>⚠️ Si el estudiante no está registrado, deberá completar sus datos antes de continuar.</li>
+                    </ul>
+                </div>             
+            </div>
+            <EditForm Model="NuevoEstudiante" OnValidSubmit="RegistrarEstudiante">
+                <DataAnnotationsValidator/>
+                <div class="row m-0 p-2 py-3">
+                    <!-- 🔹 Buscar Alumno por DNI -->
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <InputText class="form-control" placeholder="DNI"
+                                   aria-label="DNI" aria-describedby="button-addon2"
+                                       @bind-value="NuevoEstudiante.DNI" disabled="@dniBuscado" />
+                            <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2"
+                                    @onclick="BuscarPersona"
+                                    disabled="@string.IsNullOrEmpty(NuevoEstudiante.DNI)">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>                   
+                    <div class="col-12 col-sm-4">
+                        <div class="mb-3">
+                            <label class="form-label">Nombres</label>
+                            <InputText @bind-Value="NuevoEstudiante.Nombres" class="form-control"
+                                   disabled="@(estudianteExistente != null || !dniBuscado)" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-5">
+                        <div class="mb-3">
+                            <label class="form-label">Apellidos</label>
+                            <InputText @bind-Value="NuevoEstudiante.Apellidos" class="form-control"
+                                   disabled="@(estudianteExistente != null || !dniBuscado)" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <InputText @bind-Value="NuevoEstudiante.Telefono" class="form-control"
+                                   disabled="@(estudianteExistente != null || !dniBuscado)" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <InputText type="email" @bind-Value="NuevoEstudiante.Email" class="form-control"
+                                   disabled="@(estudianteExistente != null || !dniBuscado)" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-8 mb-3 d-flex align-items-end">
+                        <div class="input-group">
+                            <span class="input-group-text">Dirección</span>
+                            <InputText class="form-control" @bind-Value="NuevoEstudiante.Direccion"
+                                       disabled="@(estudianteExistente != null || !dniBuscado)"></InputText>
+                        </div>
+                    </div>
+
+                    <div>
+                        @if (dniBuscado && estudianteExistente == null)
+                        {
+                            @if (dniBuscado && estudianteExistente == null)
+                            {
+                                <button type="submit" class="btn btn-success roboto-regular me-2">Registrar Estudiante</button>
+                                <button type="button" class="btn btn-outline-dark roboto-regular" @onclick="LimpiarFormulario">Limpiar</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </EditForm>
+        </div>       
+    </div>
+
+
+    <!-- 🔹 Datos del Certificado -->
+    @if (estudianteExistente != null)
+    {
+        <div class="roboto-regular mt-4">
+            <div class="bg-primary rounded-top ms-3 px-2 py-1 text-white" style="max-width: 250px;">
+                <span>Datos del Certificado</span>
+            </div>
+            <div class="border rounded background-form p-2">
+
+                <EditForm Model="NuevoCertificado" OnValidSubmit="RegistrarCertificado">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary/>
+
+                    <div class="row p-2 py-3">
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="cursoInput" class="form-label">Escribe o seleccione Curso</label>
+                                    <InputText list="cursosLista" id="cursoInput" class="form-control" @bind-Value="NuevoCertificado.Nombre"
+                                     @oninput="ActualizarCursoId" placeholder="Escribe o selecciona un curso" required/>
+                                    <datalist id="cursosLista" style="max-height: 10px !important;">
+                                        @if (Cursos != null && CursosFiltrados.Any())
+                                        {
+                                            @foreach (var curso in Cursos)
+                                            {
+                                                <option value="@curso.Nombre" data-id="@curso.Id"></option>
+                                            }
+                                        }
+                                    </datalist>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Resolución</label>
+                                <InputSelect @bind-value="NuevoCertificado.IdResolucion" class="form-control" required>
+                                    <option value="">Seleccionar Resolución</option>
+                                    @if (Resoluciones != null && Resoluciones.Any())
+                                    {
+                                        @foreach (var resolucion in Resoluciones)
+                                        {
+                                            <option value="@resolucion.Id">@resolucion.Name</option>
+                                        }
+                                    }
+                                </InputSelect>
+                            </div>                            
+                        </div>
+
+                        <div class="col-12 col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Tipo de Documento</label>
+                                <InputSelect @bind-Value="NuevoCertificado.TipoDocumento" class="form-control" required>
+                                    <option value="">Seleccionar Resolución</option>
+                                    <option value="Diplomado">Diplomado</option>
+                                    <option value="Especializacion">Especialización</option>
+                                    <option value="Certificado">Certificado</option>
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <!--Gerar Codigo-->
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <label class="form-label">Código</label>
+                            <div class="input-group mb-3">
+                                <InputText type="text" class="form-control" placeholder="" aria-label="Codigo" required
+                                           aria-describedby="button-addon1" @bind-Value=NuevoCertificado.Codigo></InputText>
+                                <button class="btn btn-outline-secondary" type="button" @onclick="GenerarCodigo"
+                                        id="button-addon1">Generar Codigo</button>
+                            </div>
+                        </div>
+
+                        <!--Promedio Final-->
+                        <div class="col-6 col-sm-3 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Promedio</label>
+                                <InputNumber @bind-Value="NuevoCertificado.PromedioFinal" class="form-control" required/>
+                            </div>
+                        </div>
+
+                        <!--Numero de Registro-->
+                        <div class="col-6 col-sm-3 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Registro</label>
+                                <InputText @bind-Value="NuevoCertificado.Registro" placeholder="01-20-345" class="form-control" required/>
+                            </div>
+                        </div>
+
+                        <!--Fecha de Inicio-->
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Fecha de Inicio</label>
+                                <InputDate @bind-Value=NuevoCertificado.FechaInicio class="form-control"/>
+                            </div>
+                        </div>
+
+                        <!--Fecha de Termino-->
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Fecha de Termino</label>
+                                <InputDate @bind-Value=NuevoCertificado.FechaTermino class="form-control"/>
+                            </div>
+                        </div>
+
+                        <!--Fecha de Expedición-->
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Fecha de Emisión</label>
+                                <input type="date" @bind="NuevoCertificado.FechaEmision" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="mt-2 mb-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary custom-button" disabled="@IsProcessing">
+                                <i class="@ButtonIcon"></i> @ButtonText
+                                <span class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: @(IsProcessing ? "inline-block" : "none");"></span>
+                                <span class="ms-2 text-success" style="display: @(IsSuccess ? "inline-block" : "none");">&#10004;</span>
+                            </button>
+                        </div>
+                    </div>
+                </EditForm>
+
+            </div>            
+        </div>
+    }
+</div>
+
+
+@code {    
+   
+}
