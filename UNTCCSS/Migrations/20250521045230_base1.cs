@@ -39,8 +39,8 @@ namespace UNTCCSS.Migrations
                     RUC = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     Nombre = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     RazonSocial = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Telefono = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Direccion = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true)
+                    Telefono = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Direccion = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,7 +59,7 @@ namespace UNTCCSS.Migrations
                     Telefono = table.Column<int>(type: "integer", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Direccion = table.Column<string>(type: "text", nullable: false),
-                    ImagenPerfil = table.Column<string>(type: "text", nullable: true)
+                    ImagenPerfil = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace UNTCCSS.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
-                    Descripcion = table.Column<string>(type: "text", nullable: true)
+                    Descripcion = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,7 +88,7 @@ namespace UNTCCSS.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Documentacion = table.Column<string>(type: "text", nullable: true),
+                    Documentacion = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
                     AtCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -176,7 +176,7 @@ namespace UNTCCSS.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: true),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
                     PermisosId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -186,7 +186,8 @@ namespace UNTCCSS.Migrations
                         name: "FK_RolPermisos_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RolPermisos_Permisos_PermisosId",
                         column: x => x.PermisosId,
@@ -308,12 +309,12 @@ namespace UNTCCSS.Migrations
                     DNI = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Nombres = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Apellidos = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Telefono = table.Column<string>(type: "text", nullable: true),
-                    Direccion = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Telefono = table.Column<string>(type: "text", nullable: false),
+                    Direccion = table.Column<string>(type: "text", nullable: false),
                     Estado = table.Column<bool>(type: "boolean", nullable: false),
                     IsDelete = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     AtCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
@@ -323,7 +324,8 @@ namespace UNTCCSS.Migrations
                         name: "FK_Estudiantes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -336,11 +338,11 @@ namespace UNTCCSS.Migrations
                     TipoDocumento = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     IdResolucion = table.Column<int>(type: "integer", nullable: false),
                     PromedioFinal = table.Column<int>(type: "integer", nullable: false),
-                    Codigo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Codigo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
                     IsDelete = table.Column<bool>(type: "boolean", nullable: false),
-                    Registro = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Registro = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     CursoId = table.Column<int>(type: "integer", nullable: true),
                     FechaInicio = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     FechaTermino = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -348,7 +350,7 @@ namespace UNTCCSS.Migrations
                     RegCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     RegUpdated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AlumnoId = table.Column<int>(type: "integer", nullable: false),
-                    Archivo = table.Column<string>(type: "text", nullable: true)
+                    Archivo = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -402,7 +404,7 @@ namespace UNTCCSS.Migrations
             migrationBuilder.InsertData(
                 table: "Perfil",
                 columns: new[] { "Id", "Apellidos", "Direccion", "Dni", "Email", "ImagenPerfil", "Nombres", "Telefono" },
-                values: new object[] { 1, "Chingo", "Los Tulipanes 465", "12345678", "jairochingo@outlook.com", null, "Jairo", 967607828 });
+                values: new object[] { 1, "Chingo", "Los Tulipanes 465", "12345678", "jairochingo@outlook.com", "imagen/png", "Jairo", 967607828 });
 
             migrationBuilder.InsertData(
                 table: "Permisos",

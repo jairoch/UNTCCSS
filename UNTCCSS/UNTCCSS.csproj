@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-AIA-PAEC-c06c9800-d96c-48cf-998b-8d97ea5a3c4e</UserSecretsId>
     <RootNamespace>UNTCCSS</RootNamespace>

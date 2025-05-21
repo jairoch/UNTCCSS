@@ -24,8 +24,6 @@ namespace UNTCCSS.Models
 
         [Required]
         public string Direccion { get; set; } = string.Empty;
-
         public string ImagenPerfil { get; set; }
-
     }
 }

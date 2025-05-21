@@ -9,7 +9,6 @@ namespace UNTCCSS.Components.Pages.Admin
 {
     public partial class RegistrarCertificados
     {
-        [Inject] IJCARepositorio JCARepositorio { get; set; }
         [Inject] IEstudianteRepositorio EstudianteRepositorio { get; set; }
         [Inject] IUsersRepositorio UsersRepositorio { get; set; }
         [Inject] ICursoRepositorio CursoRepositorio { get; set; }
@@ -44,23 +43,13 @@ namespace UNTCCSS.Components.Pages.Admin
         {
             if (string.IsNullOrWhiteSpace(NuevoEstudiante.DNI)) return;
 
-            if (JCARepositorio != null && EstudianteRepositorio != null)
+            if (EstudianteRepositorio != null)
             {
                 // Buscar en la BD
                 estudianteExistente = await EstudianteRepositorio.BuscarEstudiante(NuevoEstudiante.DNI);
                 dniBuscado = true;
 
-                if (estudianteExistente == null)
-                {
-                    // Buscar en la API si no existe en la BD
-                    Persona = await JCARepositorio.ObtenerPersona(NuevoEstudiante.DNI);
-                    if (Persona.Success)
-                    {
-                        NuevoEstudiante.Nombres = TextFormater.ToTitleCase(Persona.Nombres);
-                        NuevoEstudiante.Apellidos = TextFormater.ToTitleCase($"{Persona.ApellidoPaterno} {Persona.ApellidoMaterno}");
-                    }
-                }
-                else
+                if(estudianteExistente != null)
                 {
                     NuevoEstudiante = estudianteExistente;
                     NuevoCertificado.AlumnoId = estudianteExistente.Id;
@@ -151,12 +140,14 @@ namespace UNTCCSS.Components.Pages.Admin
                 var user = await UsersRepositorio.GetUserWithProfileAsync();
                 if (user != null)
                 {
+                    //Validamos si existe el curso
                     var validacioncurso = await CursoRepositorio.ExisteCurso(NuevoCertificado.CursoId);
                     if(!validacioncurso)
                     {
                         NuevoCertificado.CursoId = null;
                     }
                     NuevoCertificado.UserId = user.Id;
+                    NuevoCertificado.Archivo = string.Empty;
                     var response = await certificadoRepositorio.RegistrarCertificado(NuevoCertificado);
                     if(response)
                     {

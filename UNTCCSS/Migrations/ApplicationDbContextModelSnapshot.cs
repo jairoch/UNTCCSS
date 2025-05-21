@@ -322,9 +322,11 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Archivo")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Codigo")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -361,6 +363,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Registro")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -373,6 +376,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -420,6 +424,7 @@ namespace UNTCCSS.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Direccion")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -439,6 +444,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
@@ -525,9 +531,11 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("character varying(8)");
 
                     b.Property<string>("Direccion")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Estado")
@@ -542,9 +550,11 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -579,6 +589,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImagenPerfil")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Nombres")
@@ -600,6 +611,7 @@ namespace UNTCCSS.Migrations
                             Direccion = "Los Tulipanes 465",
                             Dni = "12345678",
                             Email = "jairochingo@outlook.com",
+                            ImagenPerfil = "imagen/png",
                             Nombres = "Jairo",
                             Telefono = 967607828
                         });
@@ -614,6 +626,7 @@ namespace UNTCCSS.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -754,6 +767,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Documentacion")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -798,6 +812,7 @@ namespace UNTCCSS.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -1031,7 +1046,8 @@ namespace UNTCCSS.Migrations
                     b.HasOne("UNTCCSS.Data.ApplicationUser", "Usuario")
                         .WithMany("Certificados")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Alumno");
 
@@ -1055,7 +1071,9 @@ namespace UNTCCSS.Migrations
                 {
                     b.HasOne("UNTCCSS.Data.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
@@ -1070,7 +1088,9 @@ namespace UNTCCSS.Migrations
 
                     b.HasOne("UNTCCSS.Data.ApplicationRole", "Role")
                         .WithMany("RolPermisos")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Permisos");
 
